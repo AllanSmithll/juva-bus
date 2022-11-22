@@ -1,1 +1,5 @@
 1- Criar uma classe para cliente para instaciar informações.
+2- Threads paras que clientes façam compra de ingressos em paralelo.
+3- Ninguém pode sentar em uma poltrona comprada por outro cliente.
+4- Tranporte com UDP.
+5- Aplicação com HTTP.

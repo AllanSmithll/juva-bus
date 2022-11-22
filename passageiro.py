@@ -12,6 +12,3 @@ while True:
     msg, servidor = udp.recvfrom(1024)
     print('Servidor falou: ', msg.decode())
     msg = input('Digite uma mensagem: ')
-
-
-udp.close()

@@ -19,6 +19,7 @@ def trata_cliente(msg, cliente):
 while True:
     msg, cliente = udp.recvfrom(1024)
     t = threading.Thread(target=trata_cliente, args=(msg, cliente,))
+    sleep(2)
     t.start()
 
 udp.close()

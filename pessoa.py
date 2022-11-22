@@ -1,31 +1,22 @@
 class Pessoa:
-    def __init__(self,nome=None ,cpf=None) -> None:
-        nome = nome
-        cpf = cpf
+    def __init__(self, nome=None, cpf=None) -> None:
+        self.nome = nome
+        self.cpf = cpf
 
-    def adicionarCPf(self,CpfCliente:str):
+    def adicionarCpf(self, CpfCliente:str):
         self.cpf = CpfCliente
         
-    def adicionarNome(self,nomeCliente):
+    def adicionarNome(self, nomeCliente):
         self.nome = nomeCliente
 
 
     def __str__(self) -> str:
-        return self.nome,self.cpf
+        return f"{self.nome} de CPF {self.cpf}"
 
 
-if __name__ == 'Main':
-    marcio = Pessoa()
+if __name__ == '__main__':
+    teste = Pessoa()
     print('Aqui')
-    marcio.adicionarNome('Márcio')
-    marcio.adicionarCPf('14935749490')
-
-    print(marcio)
-
-
-
-teste = Pessoa()
-teste.adicionarCPf('115151')
-teste.adicionarNome('Marcio')
-print(teste)
-print('Aaqui')
+    teste.adicionarNome('Márcio')
+    teste.adicionarCpf('14935749490')
+    print(teste)
