@@ -1,4 +1,4 @@
-#TODO Fazer o servidor multithreads.
+# Fazer o servidor multithreads.
 import socket
 from time import sleep
 import threading
