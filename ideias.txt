@@ -3,3 +3,4 @@
 3- Ninguém pode sentar em uma poltrona comprada por outro cliente.
 4- Tranporte com UDP.
 5- Aplicação com HTTP.
+6 - Matriz Esparsa, onde a maior parte dos valores é igual a zero. Enquanto que os outros valores podem ser 1.
