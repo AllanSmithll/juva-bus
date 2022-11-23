@@ -1,4 +1,5 @@
 1- Criar uma classe para Pessoa para instanciar informações.
+2 - A gente deve pedir todas as informações no arquivo passageiro.py. Vai ser importada a Classe Pessoa pra lá
 2- Threads paras que clientes façam compras de ingressos em paralelo (Multithreading).
 3- Ninguém pode sentar em uma poltrona comprada por outro cliente (Semáforo).
 4- Tranporte com UDP.
