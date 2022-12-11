@@ -35,5 +35,3 @@ while True:
     t = threading.Thread(target=trata_cliente, args=(msg, cliente,))
     sleep(2)
     t.start()
-
-udp.close()
