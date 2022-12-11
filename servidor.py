@@ -15,18 +15,23 @@ udp.bind((HOST, PORT))
 
 print('Servidor no ar... Faça seu pedido')
 
+# Criando a lista de poltronas desocupadas e preenchendo
 listaDePoltronasDesocupadas = Lista()
 for i in range(1,20):
     listaDePoltronasDesocupadas.inserir(i,i+1)
 print(listaDePoltronasDesocupadas)   
+#Criando a variável poltrona para o cliente
 
-poltrona= listaDePoltronasDesocupadas.elemento(random.randint(0,10))
-print(poltrona)
 
+# print(poltrona)
+
+#criando a lista de poltronas ocupadas
 listaDePoltronasOcupadas = Lista()
 print(listaDePoltronasOcupadas)
 
-listaDePoltronasOcupadas.inserir(1,listaDePoltronasDesocupadas.remover(listaDePoltronasDesocupadas.busca(poltrona)))
+#toda vez que pegar um poltrona retirar da lista de desocupadas e inserir na ocupadas
+# listaDePoltronasOcupadas.inserir(1,listaDePoltronasDesocupadas.remover(listaDePoltronasDesocupadas.busca(poltrona)))
+
 print(listaDePoltronasOcupadas)
 print(listaDePoltronasDesocupadas)
 # if listaDePoltronasDesocupadas != None:
@@ -46,8 +51,11 @@ def trata_cliente(msg, cliente):
     print(dados[5])
     print(dados[6])
 
-    numeroPoltrona = random.randint(1,20) 
-    hashTable = {dados[2]:numeroPoltrona}
+    poltrona= listaDePoltronasDesocupadas.elemento(random.randint(0,10))
+    listaDePoltronasOcupadas.inserir(1,listaDePoltronasDesocupadas.remover(listaDePoltronasDesocupadas.busca(poltrona)))
+    print(listaDePoltronasOcupadas)
+    print(listaDePoltronasDesocupadas)
+    hashTable = {dados[2]:poltrona}
     print('Hash^^')
     print(hashTable)
     print('Hash^^')
