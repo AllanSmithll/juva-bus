@@ -39,8 +39,11 @@ print(listaDePoltronasDesocupadas)
 
 
 bancoDados= ChainHashTable(10)
+#implementando o mutex para impedir que uma mesma poltrona seja recebida por dois clientes
+mutex = threading.Semaphore(1)
 
 def trata_cliente(msg, cliente):
+    mutex.acquire()
     print('Recebi de', cliente, 'a mensagem', msg.decode())
     print()
     info = str(msg.decode())
@@ -65,9 +68,10 @@ def trata_cliente(msg, cliente):
     print('Hash^^')
     print(hashTable)
     print('Hash^^')
-
     nota= f" ========Sua Nota Fiscal=======  \n Agência: 40028922 \n Cliente: {dados[0]} \n Destino: {dados[4]} \n Poltrona: {poltrona} \n Data: {date.today()} \n Tipo de Pagamento: {dados[6]}"
     udp.sendto(nota.encode(), cliente)
+    print('Mutex liberado')
+    mutex.release()
 
 while True:
     msg, cliente = udp.recvfrom(1024)
