@@ -5,6 +5,7 @@ import threading
 import random
 from datetime import date
 from FuncoesDeApoio.listaSequencial import *
+from FuncoesDeApoio.hashTable import *
 import random
 HOST = 'localhost'
 PORT = 5000
@@ -38,6 +39,7 @@ print(listaDePoltronasDesocupadas)
 #      poltrona = listaDePoltronasDesocupadas[random.randint(0,10)]
 
 
+
 def trata_cliente(msg, cliente):
     print('Recebi de', cliente, 'a mensagem', msg.decode())
     print()
@@ -56,6 +58,10 @@ def trata_cliente(msg, cliente):
     print(listaDePoltronasOcupadas)
     print(listaDePoltronasDesocupadas)
     hashTable = {dados[2]:poltrona}
+    bancoDados= ChainHashTable(10)
+    
+    bancoDados.put(poltrona,dados[2] )
+    bancoDados.displayTable()
     print('Hash^^')
     print(hashTable)
     print('Hash^^')
@@ -68,7 +74,7 @@ while True:
     print(f'Cliente',cliente)
     print('Mesangem',msg.decode())
     t = threading.Thread(target=trata_cliente, args=(msg, cliente,))
-    sleep(2)
+    sleep(1)
     t.start()
 
 udp.close()
