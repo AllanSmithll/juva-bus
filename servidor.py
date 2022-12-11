@@ -25,13 +25,15 @@ def trata_cliente(msg, cliente):
     print(dados[3])
     print(dados[4])
     print(dados[5])
+    print(dados[6])
 
     numeroPoltrona = random.randint(1,20) 
-    hashTable = {dados[3]:numeroPoltrona}
+    hashTable = {dados[2]:numeroPoltrona}
     print('Hash^^')
     print(hashTable)
     print('Hash^^')
-    nota= f" Cliente: {dados[1]} \n Destino:{dados[2]} \n Poltrona: {hashTable[dados[3]]} \n Data:{date.today()} \n Tipo de Pagamento: {dados[4]}"
+
+    nota= f" ========Sua Nota Fiscal======= \n Cliente: {dados[0]} \n Destino:{dados[4]} \n Poltrona: {hashTable[dados[2]]} \n Data: {date.today()} \n Tipo de Pagamento: {dados[6]}"
     udp.sendto(nota.encode(), cliente)
 
 while True:

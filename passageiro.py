@@ -1,23 +1,31 @@
 import socket
-from pessoa import Pessoa
+from FuncoesDeApoio.pessoa import Pessoa
 
 HOST = 'localhost'
 PORT = 5000
 
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 servidor = (HOST, PORT)
-marcio = Pessoa()
-cpf = input('Digite seu CPF')
+#instaciando a classe pessoa
+cliente = Pessoa()
+#pegando as informações do cliente
+cpf = input('Digite seu CPF: ')
 nome = input('Digite seu nome: ')
-marcio.adicionarCpf(cpf)
-marcio.adicionarNome(nome)
+destino = input('Digite seu destino: ')
+tipoDePagamento = input('Digite seu tipo de Pagamento: ')
+#adicionando os dados
+cliente.adicionarCpf(cpf)
+cliente.adicionarNome(nome)
+cliente.adicionarDestino(destino)
+cliente.adicionarTipoPagamento(tipoDePagamento)
+
 print()
 print()
 opcao = int(input('Menu \n Para comprar passagem Digite 1 \n Para mais sabe preço da passagem digite 2 \n Digite:'))
 
 if opcao == 1:
     print()
-    msg = str(marcio)
+    msg = str(cliente)
     udp.sendto(msg.encode(), servidor)
     msg_servidor, servidor = udp.recvfrom(1024)
     print(msg_servidor.decode())
