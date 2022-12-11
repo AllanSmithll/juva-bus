@@ -18,14 +18,20 @@ def trata_cliente(msg, cliente):
     print('Recebi de', cliente, 'a mensagem', msg.decode())
     print()
     info = str(msg.decode())
-    temp = info.split()
-    print(temp[0] + temp[1])
-    print(temp[2] + temp[3])
+    dados = info.split(',')
+    print(dados[0])
+    print(dados[1])
+    print(dados[2])
+    print(dados[3])
+    print(dados[4])
+    print(dados[5])
+
     numeroPoltrona = random.randint(1,20) 
-    hashTable = {temp[3]:numeroPoltrona}
+    hashTable = {dados[3]:numeroPoltrona}
+    print('Hash^^')
     print(hashTable)
-    print()
-    nota= f" Cliente: {temp[1]} \n Poltrona: {hashTable[temp[3]]} \n Data:{date.today()}"
+    print('Hash^^')
+    nota= f" Cliente: {dados[1]} \n Destino:{dados[2]} \n Poltrona: {hashTable[dados[3]]} \n Data:{date.today()} \n Tipo de Pagamento: {dados[4]}"
     udp.sendto(nota.encode(), cliente)
 
 while True:
