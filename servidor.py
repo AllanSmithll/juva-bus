@@ -7,9 +7,10 @@ from datetime import date
 from FuncoesDeApoio.listaSequencial import *
 from FuncoesDeApoio.hashTable import *
 import random
+
 HOST = 'localhost'
 PORT = 5000
-
+#criando o socket, com protocolo UDP
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 udp.bind((HOST, PORT))
@@ -24,7 +25,7 @@ print(listaDePoltronasDesocupadas)
 #Criando a variável poltrona para o cliente
 
 
-# print(poltrona)
+
 
 #criando a lista de poltronas ocupadas
 listaDePoltronasOcupadas = Lista()
@@ -35,10 +36,9 @@ print(listaDePoltronasOcupadas)
 
 print(listaDePoltronasOcupadas)
 print(listaDePoltronasDesocupadas)
-# if listaDePoltronasDesocupadas != None:
-#      poltrona = listaDePoltronasDesocupadas[random.randint(0,10)]
 
 
+bancoDados= ChainHashTable(10)
 
 def trata_cliente(msg, cliente):
     print('Recebi de', cliente, 'a mensagem', msg.decode())
@@ -53,12 +53,12 @@ def trata_cliente(msg, cliente):
     print(dados[5])
     print(dados[6])
 
-    poltrona= listaDePoltronasDesocupadas.elemento(random.randint(0,10))
+    poltrona= listaDePoltronasDesocupadas.elemento(random.randint(1,20))
     listaDePoltronasOcupadas.inserir(1,listaDePoltronasDesocupadas.remover(listaDePoltronasDesocupadas.busca(poltrona)))
     print(listaDePoltronasOcupadas)
     print(listaDePoltronasDesocupadas)
     hashTable = {dados[2]:poltrona}
-    bancoDados= ChainHashTable(10)
+   
     
     bancoDados.put(poltrona,dados[2] )
     bancoDados.displayTable()
@@ -66,7 +66,7 @@ def trata_cliente(msg, cliente):
     print(hashTable)
     print('Hash^^')
 
-    nota= f" ========Sua Nota Fiscal=======  \n Agência: 40028922 \n Cliente: {dados[0]} \n Destino:{dados[4]} \n Poltrona: {hashTable[dados[2]]} \n Data: {date.today()} \n Tipo de Pagamento: {dados[6]}"
+    nota= f" ========Sua Nota Fiscal=======  \n Agência: 40028922 \n Cliente: {dados[0]} \n Destino: {dados[4]} \n Poltrona: {poltrona} \n Data: {date.today()} \n Tipo de Pagamento: {dados[6]}"
     udp.sendto(nota.encode(), cliente)
 
 while True:
