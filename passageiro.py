@@ -11,7 +11,7 @@ cliente = Pessoa()
 #pegando as informações do cliente
 cpf = input('Digite seu CPF: ')
 nome = input('Digite seu nome: ')
-destino = input('Digite seu destino: ')
+destino = input('Digite seu destino: ');
 tipoDePagamento = input('Digite seu tipo de Pagamento: ')
 #adicionando os dados
 cliente.adicionarCpf(cpf)
@@ -21,14 +21,12 @@ cliente.adicionarTipoPagamento(tipoDePagamento)
 
 print()
 print()
-opcao = int(input('Menu \n Para comprar passagem Digite 1 \n Para mais sabe preço da passagem digite 2 \n Digite:'))
+opcao = int(input('Menu \n Para comprar passagem Digite 1: '))
+quantidadeDePassagens = int(input('Quantas passagens? '))
 
 if opcao == 1:
-    print()
-    msg = str(cliente)
+    msg = f" {str(cliente)}, {str(quantidadeDePassagens)}"
     udp.sendto(msg.encode(), servidor)
     msg_servidor, servidor = udp.recvfrom(1024)
     print(msg_servidor.decode())
    
-if opcao == 2:
-    print('Passagem está em R$4,60 \n A meia passagem está R$2,30')

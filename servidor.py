@@ -43,37 +43,57 @@ bancoDados= ChainHashTable(10)
 mutexPoltrona = threading.Semaphore(1)
 mutexCliente=  threading.Semaphore(2)
 
+def passagemPreco(tipo:str,quantidade:int):
+    tipo.lower()
+    print(quantidade)
+    print(tipo)
+    if tipo == 'pix' or tipo =='dinheiro':
+        preco = 4,60 * quantidade
+        pagamento = str(preco)
+    elif tipo =='meia':
+        preco = 2,30 * quantidade
+        pagamento = str(preco)
+    return pagamento
+
 def trata_cliente(msg, cliente):
     mutexPoltrona.acquire()
     print('Recebi de', cliente, 'a mensagem', msg.decode())
     print()
     info = str(msg.decode())
     dados = info.split(',')
-    print(dados[0])
-    print(dados[1])
-    print(dados[2])
-    print(dados[3])
-    print(dados[4])
-    print(dados[5])
-    print(dados[6])
-
-    poltrona= listaDePoltronasDesocupadas.elemento(random.randint(1,20))
+    # print(dados[0])
+    # print(dados[1])
+    # print(dados[2])
+    # print(dados[3])
+    # print(dados[4])
+    # print(dados[5])
+    # print(dados[6])
+    # print(dados[7])
+    nomeCliente = dados[0]
+    CpfCliente = dados[2]
+    DestinoCliente = dados[4]
+    tipoDePagamento= dados[6]
+    quantidadePassagens = int(dados[7])
+    billcliente = passagemPreco(tipoDePagamento,quantidadePassagens)
+    
+    #destiando poltrona
+    poltrona= listaDePoltronasDesocupadas.elemento(random.randint(1,19))
     listaDePoltronasOcupadas.inserir(1,listaDePoltronasDesocupadas.remover(listaDePoltronasDesocupadas.busca(poltrona)))
     print(listaDePoltronasOcupadas)
     print(listaDePoltronasDesocupadas)
-    hashTable = {dados[2]:poltrona}
+    # hashTable = {dados[2]:poltrona}
    
     
-    bancoDados.put(poltrona,dados[2] )
+    bancoDados.put(poltrona,CpfCliente)
     bancoDados.displayTable()
-    print('Hash^^')
-    print(hashTable)
-    print('Hash^^')
-    nota= f" ========Sua Nota Fiscal=======  \n Agência: 40028922 \n Cliente: {dados[0]} \n Destino: {dados[4]} \n Poltrona: {poltrona} \n Data: {date.today()} \n Tipo de Pagamento: {dados[6]}"
+
+    nota = f" ========Sua Nota Fiscal=======  \n Agência: 40028922 \n Cliente: {nomeCliente} \n Destino: {DestinoCliente} \n Poltrona: {poltrona} \n Data: {date.today()} \n Tipo de Pagamento: {tipoDePagamento} \n Quantidades de Passagens: {quantidadePassagens} \n Preço à Pagar: {billcliente}"
     udp.sendto(nota.encode(), cliente)
     print('mutexPoltrona liberado')
     mutexPoltrona.release()
 
+
+        
 while True:
     mutexCliente.acquire()
     msg, cliente = udp.recvfrom(1024)
@@ -82,6 +102,8 @@ while True:
     t = threading.Thread(target=trata_cliente, args=(msg, cliente,))
     sleep(1)
     t.start()
+   
+    
     mutexCliente.release()
 
 udp.close()
