@@ -1,6 +1,7 @@
 from datetime import date
 import random
-c
+from threading import Semaphore
+
 mutex = Semaphore(1)
 listaDePoltronasDesocupadas= [0,1,2,3,4,5,6,7,8,9,10]
 
