@@ -30,7 +30,7 @@ opcao = int(input('============= Menu ============= \nPara comprar passagem, dig
 while True:
     if opcao == 1:
         print()
-        msg = str(marcio)
+        msg = str(nome)
         udp.sendto(msg.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
         print(msg_servidor.decode())
