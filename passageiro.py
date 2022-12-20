@@ -17,11 +17,11 @@ servidor = (HOST, PORT)
 
 onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus("JPA-SMT", largura, comprimento)}
 while True:
-    escolha = int(input("""O que deseja? 
-    1-Comprar Passagem
-    2-Ver linhas Disponíveis
-    >> """))
-    if escolha == 1:
+    escolha = input("""O que deseja? 
+    Buy - Para comprar passagem/passagens
+    Menu - Ver linhas disponíveis
+    >> """).upper()
+    if escolha == "BUY":
         print('===========Linhas Disponíveis===========')
         for bus in list(onibus.keys()):
                     print(bus)
@@ -39,9 +39,8 @@ while True:
         msg_servidor, servidor = udp.recvfrom(1024)
         print(msg_servidor.decode())
 
-    elif escolha == 2:
+    elif escolha == "MENU":
         print('===========Linhas Disponíveis===========')
         for bus in list(onibus.keys()):
                     print(bus)
         sleep(1.5)
-
