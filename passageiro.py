@@ -20,6 +20,8 @@ while True:
     escolha = input("""O que deseja? 
     Buy - Para comprar passagem/passagens
     Menu - Ver linhas disponíveis
+    EXIBIR - Para ver poltronas das linhas disponíveis
+    QUIT - Para sair!
     >> """).upper()
     escolha.upper()
     udp.sendto(escolha.encode(), servidor)
@@ -33,18 +35,21 @@ while True:
         nome = input('Digite seu nome: ')
         linha = input('Digite a linha desejada:' )
         poltrona = input('Digite a Poltrona: ')
-        cliente = f"{cpf},{nome},{linha},{poltrona}"
+        cliente = f"ALOCAR,{nome},{cpf},{linha},{poltrona}"
         msg = cliente
         udp.sendto(msg.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
         # print(msg_servidor.decode())
 
-    elif comando_server.decode()  == "MENU":
-        
+    elif comando_server.decode()  == "MENU":        
         msg_servidor, servidor = udp.recvfrom(1024)
         print(msg_servidor.decode())
         sleep(2)
 
+    elif comando_server == 'EXIBIR':
+        msg_servidor, servidor = udp.recvfrom(1024)
+
     elif comando_server.decode() == 'QUIT':
             print('Saindo do site!')
             udp.close()
+            break

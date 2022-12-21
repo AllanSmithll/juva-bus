@@ -19,7 +19,7 @@ class Onibus:
         self.__onibus.adicionar(passageiro,poltrona)
 
     def exibirPoltronas(self):
-        return print(self.__onibus)
+        return str(self.__onibus)
 
     def __str__(self) -> str:
         return f'Nome do Onibus: {self.__id}'

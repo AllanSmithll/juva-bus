@@ -38,7 +38,6 @@ class MatrizEsparsa:
     def adicionar(self,dados,poltrona):
 
         (linha,coluna) = self.calcularIndice(poltrona,self.__linhas)
-        print(linha,coluna)
         if self.__matriz[linha][coluna] == None:
             self.__matriz[linha][coluna] = dados
             self.__unidades += 1
