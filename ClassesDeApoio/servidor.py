@@ -2,7 +2,7 @@
 import socket
 from time import sleep
 import threading
-from funcoesDeGereciamento.GereciadorDeFuncoes import *
+from GereciadorDeFuncoes import *
 import random
 HOST = 'localhost'
 PORT = 5000

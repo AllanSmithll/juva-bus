@@ -1,6 +1,6 @@
 import socket
-from ClassesDeApoio.pessoa import Pessoa
-from ClassesDeApoio.onibus import *
+from pessoa import *
+from onibus import *
 from pathlib import Path
 from time import sleep
 
@@ -21,26 +21,30 @@ while True:
     Buy - Para comprar passagem/passagens
     Menu - Ver linhas disponíveis
     >> """).upper()
-    if escolha == "BUY":
-        print('===========Linhas Disponíveis===========')
-        for bus in list(onibus.keys()):
-                    print(bus)
-            
+    escolha.upper()
+    udp.sendto(escolha.encode(), servidor)
+    comando_server, servidor = udp.recvfrom(1024)
+    print(comando_server.decode())
+
+    if comando_server.decode() == "BUY":
+        print('Vamos ao cadastro!')
 
         cpf = input('Digite seu CPF: ')
         nome = input('Digite seu nome: ')
         linha = input('Digite a linha desejada:' )
         poltrona = input('Digite a Poltrona: ')
         cliente = f"{cpf},{nome},{linha},{poltrona}"
-
-
         msg = cliente
         udp.sendto(msg.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
-        print(msg_servidor.decode())
+        # print(msg_servidor.decode())
 
-    elif escolha == "MENU":
-        print('===========Linhas Disponíveis===========')
-        for bus in list(onibus.keys()):
-                    print(bus)
-        sleep(1.5)
+    elif comando_server.decode()  == "MENU":
+        
+        msg_servidor, servidor = udp.recvfrom(1024)
+        print(msg_servidor.decode())
+        sleep(2)
+
+    elif comando_server.decode() == 'QUIT':
+            print('Saindo do site!')
+            udp.close()
