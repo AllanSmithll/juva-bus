@@ -30,14 +30,12 @@ while True:
 
     if comando_server.decode() == "BUY":
         print('Vamos ao cadastro!')
-
         cpf = input('Digite seu CPF: ')
         nome = input('Digite seu nome: ')
         linha = input('Digite a linha desejada:' )
         poltrona = input('Digite a Poltrona: ')
         cliente = f"ALOCAR,{nome},{cpf},{linha},{poltrona}"
-        msg = cliente
-        udp.sendto(msg.encode(), servidor)
+        udp.sendto(cliente.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
 
     elif comando_server.decode()  == "MENU":        

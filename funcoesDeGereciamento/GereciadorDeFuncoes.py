@@ -20,6 +20,8 @@ onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Allan", 10), 3)
 def trata_cliente(udp,msg,cliente):
         comando = msg.decode()
         comando = comando.split(',')
+        data = msg.decode()
+        print(data)
         comando = comando[0]  
         print(comando)
         if comando == 'BUY':
@@ -27,13 +29,14 @@ def trata_cliente(udp,msg,cliente):
 
 
         elif comando == 'ALOCAR':
-            print(msg)
-            info = comando
-            dados = info.split(',')
+            info = data.split(',')
+            print(info)
+            dados = info
             nomeCliente = dados[1]
             CpfCliente = dados[2]
             linhaCliente = str(dados[3])
             poltrona = int(dados[4])
+
 
             #cria nova linha caso não haja uma com o mesmo nome
             mutexPoltrona.acquire()
@@ -60,11 +63,14 @@ def trata_cliente(udp,msg,cliente):
                 onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
                 onibus[linhaCliente].exibirPoltronas()
             except:
-                print('ERROR')
+                error = 'ERROR: operação não foi concluída'
+                # udp.sendto(error.encode(), cliente)
             mutexPoltrona.release()
 
             nota = f" 200-OK \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
-            udp.sendto(nota.encode(), cliente) 
+            onibusCliente =str(onibus[linhaCliente].exibirPoltronas())
+            resposta = f'{nota} \n {onibusCliente}'
+            udp.sendto(resposta.encode(), cliente) 
 
         elif comando == 'MENU':
             linhas = f'200-OK \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
@@ -72,10 +78,11 @@ def trata_cliente(udp,msg,cliente):
         
         elif comando == 'EXIBIR':              
             onibusSMT = str(onibus['SMT-JPA'].exibirPoltronas())
-            onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())
+            onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())          
             data = f'200-OK \n SMT-JPA\n{onibusSMT} \n JPA-SMT\n{onibusJPA}'
             udp.sendto(data.encode(),cliente) 
 
         elif comando == 'QUIT':
             udp.sendto('QUIT'.encode(),cliente)
-            
+
+
