@@ -64,17 +64,17 @@ def trata_cliente(udp,msg,cliente):
                 print('ERROR')
             mutexPoltrona.release()
 
-            nota = f" \n ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
+            nota = f" 200-OK \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
             udp.sendto(nota.encode(), cliente) 
 
         elif comando == 'MENU':
-            linhas = f'LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
+            linhas = f'200-OK \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
             udp.sendto(linhas.encode(),cliente)
         
         elif comando == 'EXIBIR':              
             temp = str(onibus['SMT-JPA'].exibirPoltronas())
             temp2 =  str(onibus['JPA-SMT'].exibirPoltronas())
-            data = f'SMT-JPA\n{temp} \n JPA-SMT\n{temp2}'
+            data = f'200-OK \n SMT-JPA\n{temp} \n JPA-SMT\n{temp2}'
             udp.sendto(data.encode(),cliente) 
 
         elif comando == 'QUIT':
