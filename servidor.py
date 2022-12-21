@@ -4,6 +4,7 @@ from time import sleep
 import threading
 from funcoesDeGereciamento.GereciadorDeFuncoes import *
 import random
+
 HOST = 'localhost'
 PORT = 5000
 #criando o socket, com protocolo UDP
