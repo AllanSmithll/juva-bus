@@ -67,30 +67,5 @@ class MatrizEsparsa:
         coluna = (poltrona-1) // linhas
         return linha,coluna
 
-    @classmethod
-    def indice(cls,poltrona,linhas):
-        if poltrona < 6:
-            linha = 0
-            coluna = poltrona - 1
-        elif poltrona >= 6 and poltrona < 11:
-             linha = 1
-             coluna =   (poltrona - 1) - 5 
-        elif poltrona >= 11 and poltrona <16:
-             linha = 2
-             coluna =   (poltrona - 1) - 10
-        elif poltrona >= 16 and poltrona < 21:
-             linha = 3
-             coluna =   (poltrona - 1) - 20
-        elif poltrona >= 21 and poltrona <= 25:
-             linha = 4
-             coluna = (poltrona - 1) - 25
-
-        return linha,coluna
-
-if __name__ == '__main__':
-    mat = MatrizEsparsa(5,5)
-    print(mat)
-    mat.adicionar('Márcio',25)
-    print(mat)
 
 

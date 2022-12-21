@@ -39,7 +39,6 @@ while True:
         msg = cliente
         udp.sendto(msg.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
-        # print(msg_servidor.decode())
 
     elif comando_server.decode()  == "MENU":        
         msg_servidor, servidor = udp.recvfrom(1024)
@@ -51,5 +50,6 @@ while True:
 
     elif comando_server.decode() == 'QUIT':
             print('Saindo do site!')
+            udp.sendto(''.encode(),servidor)
             udp.close()
             break

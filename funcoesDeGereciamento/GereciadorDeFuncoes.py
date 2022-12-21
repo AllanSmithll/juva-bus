@@ -9,9 +9,7 @@ from pathlib import Path
 # configurando main
 largura = 5
 comprimento = 5
-path = str(Path(__file__).parent.resolve())+'/'
 mutexPoltrona = threading.Semaphore(1)
-mutexCliente=  threading.Semaphore(2)
 
 onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus("JPA-SMT", largura, comprimento)}
 onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Alex Sandro", 3),5)
@@ -26,8 +24,9 @@ def trata_cliente(udp,msg,cliente):
         print(comando)
         if comando == 'BUY':
             udp.sendto('BUY'.encode(), cliente)
+
+
         elif comando == 'ALOCAR':
-            # msg, cliente = udp.recvfrom(2048)
             print(msg)
             info = comando
             dados = info.split(',')
@@ -72,10 +71,11 @@ def trata_cliente(udp,msg,cliente):
             udp.sendto(linhas.encode(),cliente)
         
         elif comando == 'EXIBIR':              
-            temp = str(onibus['SMT-JPA'].exibirPoltronas())
-            temp2 =  str(onibus['JPA-SMT'].exibirPoltronas())
-            data = f'200-OK \n SMT-JPA\n{temp} \n JPA-SMT\n{temp2}'
+            onibusSMT = str(onibus['SMT-JPA'].exibirPoltronas())
+            onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())
+            data = f'200-OK \n SMT-JPA\n{onibusSMT} \n JPA-SMT\n{onibusJPA}'
             udp.sendto(data.encode(),cliente) 
 
         elif comando == 'QUIT':
             udp.sendto('QUIT'.encode(),cliente)
+            

@@ -17,4 +17,6 @@ while True:
     t = threading.Thread(target=trata_cliente, args=(udp,msg, cliente,))
     sleep(1)
     t.start()
-udp.close()
+    if msg.decode() == '':
+        udp.close()
+        break
