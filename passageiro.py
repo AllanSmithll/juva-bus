@@ -20,8 +20,8 @@ while True:
     escolha = input("""O que deseja? 
     Buy - Para comprar passagem/passagens
     Menu - Ver linhas disponíveis
-    EXIBIR - Para ver poltronas das linhas disponíveis
-    QUIT - Para sair!
+    Display - Para ver poltronas das linhas disponíveis
+    Exit - Para sair!
     >> """).upper()
     escolha.upper()
     udp.sendto(escolha.encode(), servidor)
@@ -43,7 +43,7 @@ while True:
         print(msg_servidor.decode())
         sleep(2)
 
-    elif comando_server == 'EXIBIR':
+    elif comando_server == 'DISPLAY':
         msg_servidor, servidor = udp.recvfrom(1024)
 
     elif comando_server.decode() == 'QUIT':
