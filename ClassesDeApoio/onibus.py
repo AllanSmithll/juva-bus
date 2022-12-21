@@ -1,4 +1,4 @@
-from funcoesDeGerecimento.matrizEsparsa import *
+from funcoesDeGereciamento.matrizEsparsa import *
 from ClassesDeApoio.pessoa import *
 
 class OnibusException(Exception):
