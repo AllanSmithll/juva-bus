@@ -1,5 +1,5 @@
-from matrizEsparsa import *
-from pessoa import *
+from .matrizEsparsa import *
+from .pessoa import *
 
 class Onibus:
     def __init__(self,id,linhas,colunas) -> None:

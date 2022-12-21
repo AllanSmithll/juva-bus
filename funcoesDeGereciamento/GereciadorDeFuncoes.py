@@ -1,8 +1,8 @@
 import threading
 from datetime import date
 import socket
-from onibus import *
-from pessoa import *
+from ClassesDeApoio.onibus import *
+from ClassesDeApoio.pessoa import *
 from pathlib import Path
 
 

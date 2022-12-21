@@ -1,6 +1,6 @@
 import socket
-from pessoa import *
-from onibus import *
+from ClassesDeApoio.pessoa import *
+from ClassesDeApoio.onibus import *
 from pathlib import Path
 from time import sleep
 
