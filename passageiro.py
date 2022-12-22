@@ -52,7 +52,7 @@ while True:
 
     elif comando_server.decode() == 'DISPLAY':
         msg_servidor, servidor = udp.recvfrom(1024)
-        escolha = input("""Estas são os ônibus disponíveis. Onde tem número está desocupado. O que deseja fazer?\n
+        escolha = input("""Estes são os ônibus disponíveis. Onde tem número está desocupado. O que deseja fazer?\n
         """).upper()
         udp.sendto(escolha.encode(), servidor)
         continue
@@ -67,6 +67,6 @@ while True:
             print(msg_servidor.decode())
             continue
         except:
-            print('Servido com dificuldades técnicas.')
+            print('Servidor com dificuldades técnicas.')
 
-            print('Servido com dificuldades técnicas')
+            print('Servidor com dificuldades técnicas')
