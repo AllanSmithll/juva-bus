@@ -16,7 +16,7 @@ class Onibus:
         size = self.__onibus.tamanho
         return size
         
-    def adicionarPassageiro(self,passageiro,poltrona):
+    def adicionarPassageiro(self,passageiro,poltrona):   
         self.__onibus.adicionar(passageiro,poltrona)
 
     def exibirPoltronas(self):

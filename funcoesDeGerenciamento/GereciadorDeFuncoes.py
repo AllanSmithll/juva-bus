@@ -58,7 +58,6 @@ def trata_cliente(udp,msg,cliente):
             mutexPoltrona.acquire()
             try:
                 onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
-                onibus[linhaCliente].exibirPoltronas()
                 onibusCliente = str(onibus[linhaCliente].exibirPoltronas())  
                 nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData: {date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} \n {onibusCliente} "
                 udp.sendto(nota.encode(), cliente) 
