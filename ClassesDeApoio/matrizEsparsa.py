@@ -51,7 +51,7 @@ class MatrizEsparsa:
             for col in range(self.__colunas):
                 i += 1
                 if self.__matriz[lin][col] == None:
-                    s += f'[ {i} ]'
+                    s += f'[ Vago ]'
                 else:
                     s += f'[ {str(self.__matriz[lin][col])[:3]:^3} ]'
 
@@ -61,7 +61,7 @@ class MatrizEsparsa:
 
     @classmethod
     def calcularIndice(cls,poltrona,linhas):
-        ''' Método que calcula os índices de cada slot da matriz '''
+        ''' Método que calcula os valores de cada slot da matriz '''
         linha = (poltrona-1) % linhas  
         coluna = (poltrona-1) // linhas
         return linha,coluna

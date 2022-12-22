@@ -19,10 +19,7 @@ comprimento = 5
 mutexPoltrona = threading.Semaphore(1)
 
 onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus("JPA-SMT", largura, comprimento)}
-onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Gustavo", 7), 4)
-onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Leonidas", 5),2)
-onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Alex Sandro", 3),5)
-onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Allan", 10), 3)
+
 
 def trata_cliente(udp,msg,cliente):
         comando = msg.decode()
@@ -62,7 +59,8 @@ def trata_cliente(udp,msg,cliente):
             try:
                 onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
                 onibus[linhaCliente].exibirPoltronas()
-                nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData: {date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} "
+                onibusCliente = str(onibus[linhaCliente].exibirPoltronas())  
+                nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData: {date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} \n {onibusCliente} "
                 udp.sendto(nota.encode(), cliente) 
 
             except:
@@ -91,7 +89,8 @@ def trata_cliente(udp,msg,cliente):
 
 def bancoDeDados(banco,cpf,poltrona):
     ''' Método que serve para armazenar as compras efetuadas no dia '''
-    banco.put(cpf,poltrona)
+    data = date.today()
+    banco.put(cpf,(poltrona,data))
     print('=========Relatorio de Compras=========')
     banco.displayTable()
     print(banco)
