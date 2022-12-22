@@ -1,7 +1,5 @@
-import threading
-
-
 class MatrizEsparsa:
+    ''' Matriz que serve para alocar os clientes no ônibus '''
     def __init__(self,linhas,colunas):
         self.__matriz = [ [ None for y in range( colunas ) ] 
              for x in range( linhas ) ]
@@ -63,6 +61,7 @@ class MatrizEsparsa:
 
     @classmethod
     def calcularIndice(cls,poltrona,linhas):
+        ''' Método que calcula os índices de cada slot da matriz '''
         linha = (poltrona-1) % linhas  
         coluna = (poltrona-1) // linhas
         return linha,coluna

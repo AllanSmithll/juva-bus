@@ -22,7 +22,7 @@ class Entry:
         return "(" + str( self.key ) + ":" + str( self.value ) + ")"
  
 class ChainingHashTable:
-    def __init__(self, size=10):
+    def __init__(self, size=25):
         self.size = size
         # inicializa a tabela de dispersão com uma série de lists vazios
         self.table = list([] for i in range(self.size))
@@ -44,6 +44,7 @@ class ChainingHashTable:
 
         for entry in self.table[slot]: # varre as entradas da ht para ver se já existe a chave
             if key == entry.key:
+                self.__hash(key)
                 entry.value = value # se a chave existir, altera sua carga
                 return slot
             
@@ -129,9 +130,9 @@ class ChainingHashTable:
         entrada = -1
         for items in self.table:
             entrada += 1
-            print(f'Entrada {entrada:2d}: ', end='') 
+            print(f'Cliente {entrada:2d}: ', end='') 
             if len(items) == 0:
-                print(' None')
+                print(' Sem cliente')
                 continue
             for entry in items:
                 print(f'[ {entry.key},{entry.value} ] ',end='')

@@ -1,10 +1,10 @@
 import threading
 from datetime import date
 import socket
-from ClassesDeApoio.onibus import *
-from ClassesDeApoio.pessoa import *
-from .ChainingHashTable import *
-from .geraId import *
+from ClassesDeApoio.onibus import Onibus
+from ClassesDeApoio.pessoa import Pessoa
+from .ChainingHashTable import ChainingHashTable
+from .gerarId import *
 
 status = {
     "OK": "200-OK",
@@ -30,7 +30,7 @@ def trata_cliente(udp,msg,cliente):
         data = msg.decode()
         comando = comando[0]  
         if comando == 'BUY':
-            udp.sendto(f'{status["OK"]}\n BUY'.encode(), cliente)
+            udp.sendto(f'BUY'.encode(), cliente)
 
 
         elif comando == 'ALOCAR':
@@ -39,31 +39,22 @@ def trata_cliente(udp,msg,cliente):
             CpfCliente = info[2]
             linhaCliente = str(info[3])
             poltrona = int(info[4])
+
             mutexPoltrona.acquire()
+            #cria nova linha caso não haja uma com o mesmo nome
             if linhaCliente not in onibus:
                 onibus[linhaCliente] = Onibus(linhaCliente, largura, comprimento)
-                print("\nNOVA LINHA CRIADA\n")
-                
+                print("\nNova Linha adicionada a Frota!\n")            
             mutexPoltrona.release()  
-
-            onibus[linhaCliente].adicionarPassageiro(Pessoa(nomeCliente,CpfCliente),4)
-            onibus[linhaCliente].adicionarPassageiro(Pessoa('Teste',CpfCliente),4)
             
-            hashtableThread = threading.Thread(target=bancoDeDados, args=(banco,CpfCliente,poltrona))
-            hashtableThread.start()
-            #cria nova linha caso não haja uma com o mesmo nome
             
-
-           
-            nota = f" \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
-            udp.sendto(nota.encode(), cliente) 
-
-            passageiro = Pessoa(nomeCliente,CpfCliente)
-        
+               
+            passageiro = Pessoa(nomeCliente,CpfCliente)       
             # converte poltrona caso não seja informada
             if poltrona == "":
                 poltrona = None
-            
+
+        
             else:
                 poltrona = int(poltrona)
 
@@ -77,7 +68,13 @@ def trata_cliente(udp,msg,cliente):
                 error = f'{status["ERROR"]}: operação não foi concluída'
                 udp.sendto(error.encode(), cliente)
             mutexPoltrona.release()
-            
+            #colocando os dados do cliente 
+            hashtableThread = threading.Thread(target=bancoDeDados, args=(banco,CpfCliente,poltrona))
+            hashtableThread.start()
+
+            nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData:{date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} "
+            udp.sendto(nota.encode(), cliente) 
+
             
         elif comando == 'MENU':
             linhas = f'{status["OK"]} \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
@@ -90,16 +87,14 @@ def trata_cliente(udp,msg,cliente):
             udp.sendto(data.encode(),cliente) 
 
         elif comando == 'QUIT':
-            temp = str(banco)
-            udp.sendto(temp.encode(),cliente)
-            udp.sendto(''.encode(),cliente)
+            udp.sendto('QUIT'.encode(),cliente)
 
         else:
             udp.sendto('Comando inválido'.encode(),cliente)
 
 def bancoDeDados(banco,cpf,poltrona):
+    ''' Método que serve para armazenar as compras efetuadas no dia '''
     banco.put(cpf,poltrona)
     print('=========Relatorio de Compras=========')
     banco.displayTable()
     print(banco)
-

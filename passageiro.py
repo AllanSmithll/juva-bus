@@ -1,14 +1,14 @@
 import socket
 from ClassesDeApoio.pessoa import *
 from ClassesDeApoio.onibus import *
-from pathlib import Path
+
 from time import sleep
 
-largura = 4
-comprimento = 12
-path = str(Path(__file__).parent.resolve())+'/'
+largura = 5
+comprimento = 5
+
 HOST = 'localhost'
-PORT = 50000
+PORT = 65432
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 servidor = (HOST, PORT)
 
@@ -17,7 +17,7 @@ onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus(
 
 while True:
     escolha = input("""O que deseja? 
-    Buy - Para comprar passagem/passagens
+    Buy - Para comprar passagem
     Menu - Ver linhas disponíveis
     Display - Para ver poltronas das linhas disponíveis
     Quit - Para sair!
@@ -28,7 +28,7 @@ while True:
     print(comando_server.decode())
 
     if comando_server.decode() == "BUY":
-        print('Vamos ao cadastro!')
+        print('Vamos a Comprar!')
         cpf = input('Digite seu CPF: ')
         while True:
             if len(cpf) == 11:
@@ -38,8 +38,14 @@ while True:
                 cpf = input('Digite seu CPF: ')
                 
         nome = input('Digite seu nome: ')
-        linha = input('Digite a linha desejada:' )
-        poltrona = int(input('Digite a Poltrona: '))
+        linha = input('Digite a linha desejada: ').upper()
+        while True:
+            if linha == 'SMT-JPA' or linha == 'JPA-SMT': break
+            else:
+                print(f"Linha incorreta. Lembre-se do nome das linhas: {onibus['JPA-SMT']}, {onibus['SMT-JPA']}.")
+                linha = input('Digite a linha desejada: ').upper()
+
+        poltrona = int(input('Digite a Poltrona: \n'))
         cliente = f"ALOCAR,{nome},{cpf},{linha},{poltrona}"
         udp.sendto(cliente.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
@@ -52,13 +58,11 @@ while True:
 
     elif comando_server.decode() == 'DISPLAY':
         msg_servidor, servidor = udp.recvfrom(1024)
-        escolha = input("""Estes são os ônibus disponíveis. Onde tem número está desocupado. O que deseja fazer?\n
-        """).upper()
-        udp.sendto(escolha.encode(), servidor)
+        udp.sendto(msg_servidor.encode(),servidor)
         continue
 
     elif comando_server.decode() == 'QUIT':
-        print('\nSaindo da Sessão!')
+        print(f'\nSaindo da Sessão!')
         udp.sendto(''.encode(),servidor)
         break
 
@@ -68,5 +72,3 @@ while True:
             continue
         except:
             print('Servidor com dificuldades técnicas.')
-
-            print('Servidor com dificuldades técnicas')

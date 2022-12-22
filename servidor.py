@@ -5,13 +5,12 @@ import threading
 from funcoesDeGerenciamento.GereciadorDeFuncoes import *
 
 HOST = '0.0.0.0'
-PORT = 50000
-
-
+PORT = 65432
 #criando o socket, com protocolo UDP
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 udp.bind((HOST, PORT))
 print('Servidor no ar... Faça seu pedido')
+
 try:
     while True:
         msg, cliente = udp.recvfrom(1024)
@@ -23,5 +22,5 @@ try:
         thread_de_tratamento.start()
 
 except:
-    udp.sendto('SErvidor Caiu!!'.encode(),cliente)
+    udp.sendto('Servidor Caiu!!'.encode(),cliente)
 
