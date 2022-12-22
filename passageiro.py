@@ -1,6 +1,6 @@
 import socket
 from ClassesDeApoio.pessoa import *
-from ClassesDeApoio import *
+from ClassesDeApoio.onibus import *
 from pathlib import Path
 from time import sleep
 
@@ -22,10 +22,7 @@ while True:
     Display - Para ver poltronas das linhas disponíveis
     Quit - Para sair!
     >> """).upper()
-<<<<<<< HEAD
-=======
-    escolha = escolha.upper
->>>>>>> 8e5f63a991e6697453426a1cc56466b57cf3790a
+
     udp.sendto(escolha.encode(), servidor)
     comando_server, servidor = udp.recvfrom(1024)
     print(comando_server.decode())
@@ -61,13 +58,8 @@ while True:
         continue
 
     elif comando_server.decode() == 'QUIT':
-<<<<<<< HEAD
-        udp.sendto(''.encode(),servidor)
-        print('\nSaindo da Sessão!')
-=======
         print('\nSaindo da Sessão!')
         udp.sendto(''.encode(),servidor)
->>>>>>> 8e5f63a991e6697453426a1cc56466b57cf3790a
         break
 
     else:
@@ -75,8 +67,6 @@ while True:
             print(msg_servidor.decode())
             continue
         except:
-<<<<<<< HEAD
             print('Servido com dificuldades técnicas.')
-=======
+
             print('Servido com dificuldades técnicas')
->>>>>>> 8e5f63a991e6697453426a1cc56466b57cf3790a

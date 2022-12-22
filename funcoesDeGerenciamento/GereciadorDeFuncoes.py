@@ -6,6 +6,12 @@ from ClassesDeApoio.pessoa import *
 from .ChainingHashTable import *
 from .geraId import *
 
+status = {
+    "OK": "200-OK",
+    "EXIT": "150-CUSTOMER LEFT",
+    "ERROR": "100-ERROR"
+}
+
 global banco 
 banco = ChainingHashTable()
 largura = 5
@@ -24,7 +30,7 @@ def trata_cliente(udp,msg,cliente):
         data = msg.decode()
         comando = comando[0]  
         if comando == 'BUY':
-            udp.sendto('BUY'.encode(), cliente)
+            udp.sendto(f'{status["OK"]}\n BUY'.encode(), cliente)
 
 
         elif comando == 'ALOCAR':
@@ -49,7 +55,7 @@ def trata_cliente(udp,msg,cliente):
             
 
            
-            nota = f" \n  ========Sua Nota Fiscal=======  \n ID de compra: {geraId(1)}\n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
+            nota = f" \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
             udp.sendto(nota.encode(), cliente) 
 
             passageiro = Pessoa(nomeCliente,CpfCliente)
@@ -68,30 +74,26 @@ def trata_cliente(udp,msg,cliente):
                 onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
                 onibus[linhaCliente].exibirPoltronas()
             except:
-                error = 'ERROR: operação não foi concluída'
+                error = f'{status["ERROR"]}: operação não foi concluída'
                 udp.sendto(error.encode(), cliente)
             mutexPoltrona.release()
             
             
         elif comando == 'MENU':
-            linhas = f'200-OK \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
+            linhas = f'{status["OK"]} \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
             udp.sendto(linhas.encode(),cliente)
         
         elif comando == 'DISPLAY':              
             onibusSMT = str(onibus['SMT-JPA'].exibirPoltronas())
-            onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())
-            onibusNew          
-            data = f'200-OK \n SMT-JPA\n{onibusSMT} \n JPA-SMT\n{onibusJPA}'
+            onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())        
+            data = f'{status["OK"]} \n SMT-JPA\n{onibusSMT} \n JPA-SMT\n{onibusJPA}'
             udp.sendto(data.encode(),cliente) 
 
         elif comando == 'QUIT':
             temp = str(banco)
             udp.sendto(temp.encode(),cliente)
-<<<<<<< HEAD
             udp.sendto(''.encode(),cliente)
-=======
-            udp.sendto('Esse'.encode(),cliente)
->>>>>>> 8e5f63a991e6697453426a1cc56466b57cf3790a
+
         else:
             udp.sendto('Comando inválido'.encode(),cliente)
 
