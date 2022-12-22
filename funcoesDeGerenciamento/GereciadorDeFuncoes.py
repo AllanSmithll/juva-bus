@@ -87,7 +87,11 @@ def trata_cliente(udp,msg,cliente):
         elif comando == 'QUIT':
             temp = str(banco)
             udp.sendto(temp.encode(),cliente)
+<<<<<<< HEAD
             udp.sendto(''.encode(),cliente)
+=======
+            udp.sendto('Esse'.encode(),cliente)
+>>>>>>> 8e5f63a991e6697453426a1cc56466b57cf3790a
         else:
             udp.sendto('Comando inválido'.encode(),cliente)
 
