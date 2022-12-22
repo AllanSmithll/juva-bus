@@ -13,6 +13,7 @@ status = {
 }
 
 global banco 
+
 banco = ChainingHashTable()
 largura = 5
 comprimento = 5

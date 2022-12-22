@@ -33,9 +33,9 @@ class MatrizEsparsa:
         return self.__matriz[linha][coluna]
 
 
-    def adicionar(self,dados,poltrona):
-        
-        (linha,coluna) = self.calcularIndice(poltrona,self.__linhas)
+    def adicionar(self,dados,posicao):
+        ''' Método que serve para adicionar dados em uma posição escolhida'''
+        (linha,coluna) = self.calcularIndice(posicao,self.__linhas)
         if self.__matriz[linha][coluna] == None:
             self.__matriz[linha][coluna] = dados
             self.__unidades += 1
@@ -62,10 +62,10 @@ class MatrizEsparsa:
         return s
 
     @classmethod
-    def calcularIndice(cls,poltrona,linhas):
+    def calcularIndice(cls,posicao,linhas):
         ''' Método que calcula os valores de cada slot da matriz '''
-        linha = (poltrona-1) % linhas  
-        coluna = (poltrona-1) // linhas
+        linha = (posicao-1) % linhas  
+        coluna = (posicao-1) // linhas
         return linha,coluna
 
 
