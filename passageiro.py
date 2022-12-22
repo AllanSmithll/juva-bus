@@ -29,9 +29,16 @@ while True:
     if comando_server.decode() == "BUY":
         print('Vamos ao cadastro!')
         cpf = input('Digite seu CPF: ')
+        while True:
+            if len(cpf) == 11:
+                break
+            else:
+                print('CPF Inválido')
+                cpf = input('Digite seu CPF: ')
+                
         nome = input('Digite seu nome: ')
         linha = input('Digite a linha desejada:' )
-        poltrona = input('Digite a Poltrona: ')
+        poltrona = int(input('Digite a Poltrona: '))
         cliente = f"ALOCAR,{nome},{cpf},{linha},{poltrona}"
         udp.sendto(cliente.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
@@ -40,7 +47,7 @@ while True:
     elif comando_server.decode()  == "MENU":        
         msg_servidor, servidor = udp.recvfrom(1024)
         print(msg_servidor.decode())
-        sleep(2)
+        sleep(1)
 
     elif comando_server == 'DISPLAY':
         msg_servidor, servidor = udp.recvfrom(1024)
@@ -52,6 +59,8 @@ while True:
         break
 
     else:
-        msg_servidor, servidor = udp.recvfrom(1024)
-        print(msg_servidor)
-        break
+        try:
+            print(msg_servidor.decode())
+            continue
+        except:
+            print('Servido com dificuldades técnicas')

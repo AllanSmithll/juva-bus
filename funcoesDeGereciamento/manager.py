@@ -4,8 +4,6 @@ import socket
 from ClassesDeApoio.onibus import *
 from ClassesDeApoio.pessoa import *
 from .ChainingHashTable import *
-from .geraId import *
-
 global banco 
 banco = ChainingHashTable()
 largura = 5
@@ -22,7 +20,9 @@ def trata_cliente(udp,msg,cliente):
         comando = msg.decode()
         comando = comando.split(',')
         data = msg.decode()
+        print(data)
         comando = comando[0]  
+        print(comando)
         if comando == 'BUY':
             udp.sendto('BUY'.encode(), cliente)
 
@@ -33,24 +33,17 @@ def trata_cliente(udp,msg,cliente):
             CpfCliente = info[2]
             linhaCliente = str(info[3])
             poltrona = int(info[4])
-            mutexPoltrona.acquire()
-            if linhaCliente not in onibus:
-                onibus[linhaCliente] = Onibus(linhaCliente, largura, comprimento)
-                print("\nNOVA LINHA CRIADA\n")
-                
-            mutexPoltrona.release()  
-
-            onibus[linhaCliente].adicionarPassageiro(Pessoa(nomeCliente,CpfCliente),4)
-            onibus[linhaCliente].adicionarPassageiro(Pessoa('Teste',CpfCliente),4)
             
+
             hashtableThread = threading.Thread(target=bancoDeDados, args=(banco,CpfCliente,poltrona))
             hashtableThread.start()
             #cria nova linha caso não haja uma com o mesmo nome
-            
+            # mutexPoltrona.acquire()
+            if linhaCliente not in onibus:
+                onibus[linhaCliente] = Onibus(linhaCliente, largura, comprimento)
 
-           
-            nota = f" \n  ========Sua Nota Fiscal=======  \n ID de compra: {geraId(1)}\n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
-            udp.sendto(nota.encode(), cliente) 
+                print("\nNOVA LINHA CRIADA\n")
+            # mutexPoltrona.release()
 
             passageiro = Pessoa(nomeCliente,CpfCliente)
         
@@ -61,35 +54,38 @@ def trata_cliente(udp,msg,cliente):
             else:
                 poltrona = int(poltrona)
 
+            onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
+            onibus[linhaCliente].exibirPoltronas()
+            print()
 
             #adiciona passageiro
-            mutexPoltrona.acquire()
+            # mutexPoltrona.acquire()
             try:
                 onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
                 onibus[linhaCliente].exibirPoltronas()
             except:
                 error = 'ERROR: operação não foi concluída'
-                udp.sendto(error.encode(), cliente)
-            mutexPoltrona.release()
-            
-            
+            # mutexPoltrona.release()
+
+            nota = f" \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
+            onibusCliente =str(onibus[linhaCliente].exibirPoltronas())
+            resposta = f'200-OK \n {nota} \n {onibusCliente}'
+            udp.sendto(resposta.encode(), cliente) 
+
         elif comando == 'MENU':
             linhas = f'200-OK \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
             udp.sendto(linhas.encode(),cliente)
         
-        elif comando == 'DISPLAY':              
+        elif comando == 'EXIBIR':              
             onibusSMT = str(onibus['SMT-JPA'].exibirPoltronas())
-            onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())
-            onibusNew          
+            onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())          
             data = f'200-OK \n SMT-JPA\n{onibusSMT} \n JPA-SMT\n{onibusJPA}'
             udp.sendto(data.encode(),cliente) 
 
         elif comando == 'QUIT':
             temp = str(banco)
             udp.sendto(temp.encode(),cliente)
-            udp.sendto('Esse'.encode(),cliente)
-        else:
-            udp.sendto('Comando inválido'.encode(),cliente)
+            udp.sendto('QUIT'.encode(),cliente)
 
 def bancoDeDados(banco,cpf,poltrona):
     banco.put(cpf,poltrona)
