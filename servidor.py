@@ -11,6 +11,12 @@ udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 udp.bind((HOST, PORT))
 print('Servidor no ar... Faça seu pedido')
 
+status = {
+    "OK": "200-OK",
+    "EXIT": "150-CUSTOMER LEFT",
+    "ERROR": "100-ERROR"
+}
+
 try:
     while True:
         msg, cliente = udp.recvfrom(1024)
