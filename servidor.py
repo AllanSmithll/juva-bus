@@ -3,8 +3,9 @@ import socket
 from time import sleep
 import threading
 from funcoesDeGerenciamento.GereciadorDeFuncoes import *
+
 HOST = '0.0.0.0'
-PORT = 5000
+PORT = 50000
 
 
 #criando o socket, com protocolo UDP

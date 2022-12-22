@@ -8,7 +8,7 @@ largura = 4
 comprimento = 12
 path = str(Path(__file__).parent.resolve())+'/'
 HOST = 'localhost'
-PORT = 5000
+PORT = 50000
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 servidor = (HOST, PORT)
 
@@ -22,7 +22,7 @@ while True:
     Display - Para ver poltronas das linhas disponíveis
     Quit - Para sair!
     >> """).upper()
-
+    escolha = escolha.upper
     udp.sendto(escolha.encode(), servidor)
     comando_server, servidor = udp.recvfrom(1024)
     print(comando_server.decode())
@@ -43,10 +43,12 @@ while True:
         print(msg_servidor.decode())
         sleep(2)
 
-    elif comando_server == 'DISPLAY':
+    elif comando_server.decode() == 'DISPLAY':
         msg_servidor, servidor = udp.recvfrom(1024)
         escolha = input("""Estas são os ônibus disponíveis. Onde tem número está desocupado. O que deseja fazer?\n
         """).upper()
+        udp.sendto(escolha.encode(), servidor)
+        continue
 
     elif comando_server.decode() == 'QUIT':
         print('\nSaindo da Sessão!')

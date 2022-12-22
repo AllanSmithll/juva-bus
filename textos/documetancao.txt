@@ -44,6 +44,6 @@ Saindo do Sessão!
 Parte do Servidor:
 Como tinha falado antes, o servidor chama a função 'trata_cliente' essa função está responsável por tratar as requisições do cliente.
 
-Buy - 
+Buy -
 
 
