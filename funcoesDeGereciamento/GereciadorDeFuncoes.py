@@ -3,10 +3,9 @@ from datetime import date
 import socket
 from ClassesDeApoio.onibus import *
 from ClassesDeApoio.pessoa import *
-from pathlib import Path
-
-
-# configurando main
+from .ChainingHashTable import *
+global banco 
+banco = ChainingHashTable()
 largura = 5
 comprimento = 5
 mutexPoltrona = threading.Semaphore(1)
@@ -34,8 +33,10 @@ def trata_cliente(udp,msg,cliente):
             CpfCliente = info[2]
             linhaCliente = str(info[3])
             poltrona = int(info[4])
+            
 
-
+            hashtableThread = threading.Thread(target=bancoDeDados, args=(banco,CpfCliente,poltrona))
+            hashtableThread.start()
             #cria nova linha caso não haja uma com o mesmo nome
             # mutexPoltrona.acquire()
             if linhaCliente not in onibus:
@@ -53,6 +54,8 @@ def trata_cliente(udp,msg,cliente):
             else:
                 poltrona = int(poltrona)
 
+            onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
+            onibus[linhaCliente].exibirPoltronas()
             print()
 
             #adiciona passageiro
@@ -80,6 +83,13 @@ def trata_cliente(udp,msg,cliente):
             udp.sendto(data.encode(),cliente) 
 
         elif comando == 'QUIT':
+            temp = str(banco)
+            udp.sendto(temp.encode(),cliente)
             udp.sendto('QUIT'.encode(),cliente)
 
-        
+def bancoDeDados(banco,cpf,poltrona):
+    banco.put(cpf,poltrona)
+    print('=========Relatorio de Compras=========')
+    banco.displayTable()
+    print(banco)
+
