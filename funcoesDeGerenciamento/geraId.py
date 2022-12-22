@@ -1,7 +1,7 @@
 import random
 import string
 
-def geraId(ids):
+def gerarId(ids):
     ''' Método que gera uma quantidade de ID '''
     ids = int(input("Quantos IDs necessários? "))
 
@@ -9,5 +9,5 @@ def geraId(ids):
         id = "".join([random.choice(string.digits) for i in range(12)])
         print(id)
 
-identifiers = geraId(5)
+identifiers = gerarId(5)
 print(identifiers)

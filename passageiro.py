@@ -14,6 +14,7 @@ servidor = (HOST, PORT)
 
 
 onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus("JPA-SMT", largura, comprimento)}
+
 while True:
     escolha = input("""O que deseja? 
     Buy - Para comprar passagem/passagens
@@ -44,11 +45,12 @@ while True:
 
     elif comando_server == 'DISPLAY':
         msg_servidor, servidor = udp.recvfrom(1024)
+        escolha = input("""Estas são os ônibus disponíveis. Onde tem número está desocupado. O que deseja fazer?\n
+        """).upper()
 
     elif comando_server.decode() == 'QUIT':
-        print('\nSaindo do site!')
+        print('\nSaindo da Sessão!')
         udp.sendto(''.encode(),servidor)
-        udp.close()
         break
 
     else:
