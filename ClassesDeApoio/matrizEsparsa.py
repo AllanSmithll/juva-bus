@@ -8,7 +8,7 @@ class MatrizEsparsa:
         self.__linhas = len(self.__matriz)
         self.__colunas = len(self.__matriz[0])
         self.__unidades = int()
-        self.__adm = threading.Semaphore(1)
+
     @property
     def matriz(self):
         return self.__matriz
@@ -41,7 +41,7 @@ class MatrizEsparsa:
         if self.__matriz[linha][coluna] == None:
             self.__matriz[linha][coluna] = dados
             self.__unidades += 1
-            self.__adm.release()
+
             return True
 
     def __str__(self):

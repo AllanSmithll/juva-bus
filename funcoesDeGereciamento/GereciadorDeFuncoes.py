@@ -12,9 +12,9 @@ comprimento = 5
 mutexPoltrona = threading.Semaphore(1)
 
 onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus("JPA-SMT", largura, comprimento)}
-onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Alex Sandro", 3),5)
-onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Leonidas", 5),2)
 onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Gustavo", 7), 4)
+onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Leonidas", 5),2)
+onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Alex Sandro", 3),5)
 onibus["SMT-JPA"].adicionarPassageiro(Pessoa("Allan", 10), 3)
 
 def trata_cliente(udp,msg,cliente):
@@ -30,21 +30,19 @@ def trata_cliente(udp,msg,cliente):
 
         elif comando == 'ALOCAR':
             info = data.split(',')
-            print(info)
-            dados = info
-            nomeCliente = dados[1]
-            CpfCliente = dados[2]
-            linhaCliente = str(dados[3])
-            poltrona = int(dados[4])
+            nomeCliente = info[1]
+            CpfCliente = info[2]
+            linhaCliente = str(info[3])
+            poltrona = int(info[4])
 
 
             #cria nova linha caso não haja uma com o mesmo nome
-            mutexPoltrona.acquire()
+            # mutexPoltrona.acquire()
             if linhaCliente not in onibus:
                 onibus[linhaCliente] = Onibus(linhaCliente, largura, comprimento)
 
                 print("\nNOVA LINHA CRIADA\n")
-            mutexPoltrona.release()
+            # mutexPoltrona.release()
 
             passageiro = Pessoa(nomeCliente,CpfCliente)
         
@@ -58,18 +56,17 @@ def trata_cliente(udp,msg,cliente):
             print()
 
             #adiciona passageiro
-            mutexPoltrona.acquire()
+            # mutexPoltrona.acquire()
             try:
                 onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
                 onibus[linhaCliente].exibirPoltronas()
             except:
                 error = 'ERROR: operação não foi concluída'
-                # udp.sendto(error.encode(), cliente)
-            mutexPoltrona.release()
+            # mutexPoltrona.release()
 
-            nota = f" 200-OK \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
+            nota = f" \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
             onibusCliente =str(onibus[linhaCliente].exibirPoltronas())
-            resposta = f'{nota} \n {onibusCliente}'
+            resposta = f'200-OK \n {nota} \n {onibusCliente}'
             udp.sendto(resposta.encode(), cliente) 
 
         elif comando == 'MENU':
@@ -85,4 +82,4 @@ def trata_cliente(udp,msg,cliente):
         elif comando == 'QUIT':
             udp.sendto('QUIT'.encode(),cliente)
 
-
+        
