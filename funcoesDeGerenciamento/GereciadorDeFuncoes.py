@@ -1,16 +1,11 @@
 import threading
 from datetime import date
 import socket
-from ClassesDeApoio.onibus import *
-from ClassesDeApoio.pessoa import *
-from .ChainingHashTable import *
-from .geraId import *
-
-status = {
-    "OK": "200-OK",
-    "EXIT": "150-CUSTOMER LEFT",
-    "ERROR": "100-ERROR"
-}
+from ClassesDeApoio.onibus import Onibus
+from ClassesDeApoio.pessoa import Pessoa
+from .ChainingHashTable import ChainingHashTable
+from .gerarId import *
+from servidor import status
 
 global banco 
 banco = ChainingHashTable()
@@ -30,7 +25,7 @@ def trata_cliente(udp,msg,cliente):
         data = msg.decode()
         comando = comando[0]  
         if comando == 'BUY':
-            udp.sendto(f'{status["OK"]}\n BUY'.encode(), cliente)
+            udp.sendto(f'BUY'.encode(), cliente)
 
 
         elif comando == 'ALOCAR':
@@ -55,7 +50,7 @@ def trata_cliente(udp,msg,cliente):
             
 
            
-            nota = f" \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
+            nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData:{date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} "
             udp.sendto(nota.encode(), cliente) 
 
             passageiro = Pessoa(nomeCliente,CpfCliente)
@@ -98,8 +93,8 @@ def trata_cliente(udp,msg,cliente):
             udp.sendto('Comando inválido'.encode(),cliente)
 
 def bancoDeDados(banco,cpf,poltrona):
+    ''' Método que serve para armazenar '''
     banco.put(cpf,poltrona)
     print('=========Relatorio de Compras=========')
     banco.displayTable()
     print(banco)
-

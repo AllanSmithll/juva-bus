@@ -8,7 +8,7 @@ largura = 4
 comprimento = 12
 path = str(Path(__file__).parent.resolve())+'/'
 HOST = 'localhost'
-PORT = 50000
+PORT = 55000
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 servidor = (HOST, PORT)
 
@@ -17,7 +17,7 @@ onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus(
 
 while True:
     escolha = input("""O que deseja? 
-    Buy - Para comprar passagem/passagens
+    Buy - Para comprar passagem
     Menu - Ver linhas disponíveis
     Display - Para ver poltronas das linhas disponíveis
     Quit - Para sair!
@@ -38,7 +38,12 @@ while True:
                 cpf = input('Digite seu CPF: ')
                 
         nome = input('Digite seu nome: ')
-        linha = input('Digite a linha desejada:' )
+        linha = input('Digite a linha desejada: ')
+        while True:
+            if linha == onibus['JPA-SMT'] or linha == onibus['SMT-JPA']: break
+            else:
+                print(f"Linha incorreta. Lembre-se das linhas: {onibus['JPA-SMT']}, {onibus['SMT-JPA']}.")
+
         poltrona = int(input('Digite a Poltrona: '))
         cliente = f"ALOCAR,{nome},{cpf},{linha},{poltrona}"
         udp.sendto(cliente.encode(), servidor)
@@ -68,5 +73,3 @@ while True:
             continue
         except:
             print('Servidor com dificuldades técnicas.')
-
-            print('Servidor com dificuldades técnicas')
