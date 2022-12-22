@@ -1,0 +1,49 @@
+Protocolo de Aplicação:
+O nosso protocolos funciona baseada na função "trata_cliente"
+a função possui tratamento para comandos recebidos pelo cliente que são tratados, fazendo que o servidor mande de volta uma mensagem de volta ao cliente, essa mensagem pode ser um comando
+para o cliente enviar o que foi pedido, ou apenas a confirmação ou dados.
+
+Vamos aos comandos e suas explicações:
+Parte do cliente:
+
+Buy - Solicita ao servidor uma compra de passagem -
+
+Requisição:
+BUY
+
+Resposta:
+O servidor recebe o comando, e reevia outro para, pedindo seu nome,cpf,poltrona e linha.
+
+
+Menu - Solicita ao servidor a linhas disponíveis de ônibus
+
+Requisição:
+MENU
+
+Resposta:
+Retorna o nome das linhas disponíveis
+
+
+Display - Solicita as poltronas de todos os ônibus disponíveis.
+
+Requisição:
+Display
+
+Resposta:
+Retorna o nome da linha/ônibus e abaixo suas respectivas poltronas.
+
+Quit - Encerra a sessão
+
+Requisição:
+QUIT
+
+Resposta:
+Saindo do Sessão!
+
+
+Parte do Servidor:
+Como tinha falado antes, o servidor chama a função 'trata_cliente' essa função está responsável por tratar as requisições do cliente.
+
+Buy -
+
+
