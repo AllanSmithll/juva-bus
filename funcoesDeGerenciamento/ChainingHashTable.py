@@ -127,7 +127,7 @@ class ChainingHashTable:
 
 
     def displayTable(self):
-        entrada = -1
+        entrada = 0
         for items in self.table:
             entrada += 1
             print(f'Cliente {entrada:2d}: ', end='') 

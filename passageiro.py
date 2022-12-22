@@ -42,13 +42,15 @@ while True:
         while True:
             if linha == 'SMT-JPA' or linha == 'JPA-SMT': break
             else:
-                print(f"Linha incorreta. Lembre-se do nome das linhas: {onibus['JPA-SMT']}, {onibus['SMT-JPA']}.")
+                print(f"Linha incorreta. Lembre-se do nome das linhas: {onibus['JPA-SMT']},{onibus['SMT-JPA']}.")
                 linha = input('Digite a linha desejada: ').upper()
 
-        poltrona = int(input('Digite a Poltrona: \n'))
+        poltrona = int(input('Digite a Poltrona: '))
         cliente = f"ALOCAR,{nome},{cpf},{linha},{poltrona}"
         udp.sendto(cliente.encode(), servidor)
         msg_servidor, servidor = udp.recvfrom(1024)
+        print(msg_servidor.decode())
+
 
 
     elif comando_server.decode()  == "MENU":        
@@ -66,9 +68,9 @@ while True:
         udp.sendto(''.encode(),servidor)
         break
 
-    else:
-        try:
-            print(msg_servidor.decode())
-            continue
-        except:
-            print('Servidor com dificuldades técnicas.')
+    # else:
+    #     try:
+    #         print(msg_servidor.decode())
+    #         continue
+    #     except:
+    #         print('Servidor com dificuldades técnicas.')

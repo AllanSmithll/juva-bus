@@ -46,10 +46,8 @@ def trata_cliente(udp,msg,cliente):
                 onibus[linhaCliente] = Onibus(linhaCliente, largura, comprimento)
                 print("\nNova Linha adicionada a Frota!\n")            
             mutexPoltrona.release()  
-            
-            
-               
-            passageiro = Pessoa(nomeCliente,CpfCliente)       
+            passageiro = Pessoa(nomeCliente,CpfCliente)
+
             # converte poltrona caso não seja informada
             if poltrona == "":
                 poltrona = None
@@ -64,6 +62,9 @@ def trata_cliente(udp,msg,cliente):
             try:
                 onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
                 onibus[linhaCliente].exibirPoltronas()
+                nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData: {date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} "
+                udp.sendto(nota.encode(), cliente) 
+
             except:
                 error = f'{status["ERROR"]}: operação não foi concluída'
                 udp.sendto(error.encode(), cliente)
@@ -71,13 +72,9 @@ def trata_cliente(udp,msg,cliente):
             #colocando os dados do cliente 
             hashtableThread = threading.Thread(target=bancoDeDados, args=(banco,CpfCliente,poltrona))
             hashtableThread.start()
-
-            nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData:{date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} "
-            udp.sendto(nota.encode(), cliente) 
-
             
         elif comando == 'MENU':
-            linhas = f'{status["OK"]} \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
+            linhas = f'{status["OK"]}\nLINHAS DISPONÌVEIS:\n SMT-JPA\n JPA-SMT'
             udp.sendto(linhas.encode(),cliente)
         
         elif comando == 'DISPLAY':              
