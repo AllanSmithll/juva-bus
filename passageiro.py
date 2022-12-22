@@ -7,7 +7,7 @@ from time import sleep
 largura = 5
 comprimento = 5
 
-HOST = 'localhost'
+HOST = '10.0.4.143'
 PORT = 65432
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 servidor = (HOST, PORT)
