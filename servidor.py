@@ -2,9 +2,10 @@
 import socket
 from time import sleep
 import threading
-from funcoesDeGereciamento.GereciadorDeFuncoes import *
-HOST = 'localhost'
+from funcoesDeGerenciamento.GereciadorDeFuncoes import *
+HOST = '0.0.0.0'
 PORT = 5000
+
 #criando o socket, com protocolo UDP
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 udp.bind((HOST, PORT))

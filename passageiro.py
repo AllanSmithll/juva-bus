@@ -18,10 +18,10 @@ while True:
     escolha = input("""O que deseja? 
     Buy - Para comprar passagem/passagens
     Menu - Ver linhas disponíveis
-    EXIBIR - Para ver poltronas das linhas disponíveis
-    QUIT - Para sair!
+    Display - Para ver poltronas das linhas disponíveis
+    Quit - Para sair!
     >> """).upper()
-    escolha.upper()
+
     udp.sendto(escolha.encode(), servidor)
     comando_server, servidor = udp.recvfrom(1024)
     print(comando_server.decode())
@@ -42,15 +42,16 @@ while True:
         print(msg_servidor.decode())
         sleep(2)
 
-    elif comando_server == 'EXIBIR':
+    elif comando_server == 'DISPLAY':
         msg_servidor, servidor = udp.recvfrom(1024)
 
     elif comando_server.decode() == 'QUIT':
-            print('Saindo do site!')
-            udp.sendto(''.encode(),servidor)
-            udp.close()
-            break
+        print('\nSaindo do site!')
+        udp.sendto(''.encode(),servidor)
+        udp.close()
+        break
 
     else:
         msg_servidor, servidor = udp.recvfrom(1024)
         print(msg_servidor)
+        break

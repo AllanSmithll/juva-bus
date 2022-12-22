@@ -4,6 +4,8 @@ import socket
 from ClassesDeApoio.onibus import *
 from ClassesDeApoio.pessoa import *
 from .ChainingHashTable import *
+from geraID import geraID
+
 global banco 
 banco = ChainingHashTable()
 largura = 5
@@ -67,7 +69,7 @@ def trata_cliente(udp,msg,cliente):
                 error = 'ERROR: operação não foi concluída'
             # mutexPoltrona.release()
 
-            nota = f" \n  ========Sua Nota Fiscal=======  \n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
+            nota = f" \n  ========Sua Nota Fiscal=======  \n ID de compra: {geraId(1)}\n Emitido pela Agência: 40028922 \n Data:{date.today()} \n Cliente: {nomeCliente} \n Linha: {linhaCliente}\n Poltrona:{poltrona} "
             onibusCliente =str(onibus[linhaCliente].exibirPoltronas())
             resposta = f'200-OK \n {nota} \n {onibusCliente}'
             udp.sendto(resposta.encode(), cliente) 
@@ -76,7 +78,7 @@ def trata_cliente(udp,msg,cliente):
             linhas = f'200-OK \n LINHAS DISPONÌVEIS: \n SMT-JPA \n JPA-SMT'
             udp.sendto(linhas.encode(),cliente)
         
-        elif comando == 'EXIBIR':              
+        elif comando == 'DISPLAY':              
             onibusSMT = str(onibus['SMT-JPA'].exibirPoltronas())
             onibusJPA=  str(onibus['JPA-SMT'].exibirPoltronas())          
             data = f'200-OK \n SMT-JPA\n{onibusSMT} \n JPA-SMT\n{onibusJPA}'
@@ -85,7 +87,7 @@ def trata_cliente(udp,msg,cliente):
         elif comando == 'QUIT':
             temp = str(banco)
             udp.sendto(temp.encode(),cliente)
-            udp.sendto('QUIT'.encode(),cliente)
+            udp.sendto('Esse'.encode(),cliente)
 
 def bancoDeDados(banco,cpf,poltrona):
     banco.put(cpf,poltrona)
