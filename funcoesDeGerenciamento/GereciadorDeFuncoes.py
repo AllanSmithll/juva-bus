@@ -58,10 +58,13 @@ def trata_cliente(udp,msg,cliente):
             #adiciona passageiro
             mutexPoltrona.acquire()
             try:
-                onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona)
-                onibusCliente = str(onibus[linhaCliente].exibirPoltronas())  
-                nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData: {date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} \n {onibusCliente} "
-                udp.sendto(nota.encode(), cliente) 
+                if onibus[linhaCliente].adicionarPassageiro(passageiro.nome, poltrona):
+                        
+                    onibusCliente = str(onibus[linhaCliente].exibirPoltronas())  
+                    nota = f" \n  ========Sua Nota Fiscal=======  \nID de compra: {(gerarId(1))}\nEmitido pela Agência: 40028922 \nData: {date.today()} \nCliente: {nomeCliente} \nLinha: {linhaCliente}\nPoltrona:{poltrona} \n {onibusCliente} "
+                    udp.sendto(nota.encode(), cliente) 
+                else:
+                    udp.sendto('Reiniciando, Poltrona inválida, Digite Display'.encode(), cliente) 
 
             except:
                 error = f'{status["ERROR"]}: operação não foi concluída'
@@ -89,8 +92,7 @@ def trata_cliente(udp,msg,cliente):
 
 def bancoDeDados(banco,cpf,poltrona):
     ''' Método que serve para armazenar as compras efetuadas no dia '''
-    data = date.today()
+    data = str(date.today())
     banco.put(cpf,(poltrona,data))
     print('=========Relatorio de Compras=========')
     banco.displayTable()
-    print(banco)

@@ -16,12 +16,14 @@ servidor = (HOST, PORT)
 onibus = {"SMT-JPA": Onibus("SMT-JPA", largura, comprimento), "JPA-SMT": Onibus("JPA-SMT", largura, comprimento)}
 
 while True:
+    print('-=-'*15)
     escolha = input("""O que deseja? 
     Buy - Para comprar passagem
     Menu - Ver linhas disponíveis
     Display - Para ver poltronas das linhas disponíveis
     Quit - Para sair!
-    >> """).upper()
+    >> """).upper().strip()
+    print("-=-"*15)
 
     udp.sendto(escolha.encode(), servidor)
     comando_server, servidor = udp.recvfrom(1024)
@@ -29,21 +31,21 @@ while True:
 
     if comando_server.decode() == "BUY":
         print('Vamos a Comprar!')
-        cpf = input('Digite seu CPF: ')
+        cpf = input('Digite seu CPF: ').strip()
         while True:
             if len(cpf) == 11:
                 break
             else:
                 print('CPF Inválido')
-                cpf = input('Digite seu CPF: ')
+                cpf = input('Digite seu CPF: ').strip()
                 
-        nome = input('Digite seu nome: ')
+        nome = input('Digite seu nome: ').strip()
         linha = input('Digite a linha desejada: ').upper()
         while True:
             if linha == 'SMT-JPA' or linha == 'JPA-SMT': break
             else:
                 print(f"Linha incorreta. Lembre-se do nome das linhas: {onibus['JPA-SMT']},{onibus['SMT-JPA']}.")
-                linha = input('Digite a linha desejada: ').upper()
+                linha = input('Digite a linha desejada: ').upper().strip()
 
         poltrona = int(input('Digite a Poltrona: '))
         cliente = f"ALOCAR,{nome},{cpf},{linha},{poltrona}"
@@ -67,10 +69,3 @@ while True:
         print(f'\nSaindo da Sessão!')
         udp.sendto(''.encode(),servidor)
         break
-
-    # else:
-    #     try:
-    #         print(msg_servidor.decode())
-    #         continue
-    #     except:
-    #         print('Servidor com dificuldades técnicas.')
