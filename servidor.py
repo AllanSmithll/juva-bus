@@ -4,7 +4,7 @@ from time import sleep
 import threading
 from funcoesDeGerenciamento.GereciadorDeFuncoes import *
 
-HOST = '0.0.0.0'
+HOST = 'localhost'
 PORT = 65432
 #criando o socket, com protocolo UDP
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
